@@ -13,11 +13,11 @@ const GroupedBooking = require("../database/models/groupedBookings");
 // DELETE api/<YOUR-DATA-TYPE>/:id
 
 router
-	.get("/", (async (req, res, next) => {
+	.get("/", async (req, res, next) => {
 		await GroupedBooking.find()
-			.then(allDocuments => res.json(allDocuments))
-			.catch(err => next(new Error(err)))
-	}))	
+			.then((allDocuments) => res.json(allDocuments))
+			.catch((err) => next(new Error(err)));
+	})
 	.get("/byUser/:userID", async (req, res, next) => {
 		const { userID } = req.params;
 		await GroupedBooking.find({ userID })
@@ -33,12 +33,12 @@ router
 		await GroupedBooking.findById(bookingID)
 			.then((result) => res.json(result))
 			.catch((err) => next(new Error(err)));
-	})	
+	})
 
 	.post("/:userID", async (req, res, next) => {
 		const { userID } = req.params;
 		//pushing the product id into every element is redundant since it's already in the top level grouped object, but might be useful for other functionality
-		const newBooking = { ...req.body};
+		const newBooking = { ...req.body };
 		GroupedBooking.findOneAndUpdate(
 			{ userID },
 			{ $push: { bookings: newBooking } },
@@ -61,7 +61,9 @@ router
 
 	.delete("/:bookingID", async (req, res, next) => {
 		const { bookingID } = req.params;
-		await GroupedBooking.findByIdAndDelete(bookingID, { useFindAndModify: false })
+		await GroupedBooking.findByIdAndDelete(bookingID, {
+			useFindAndModify: false,
+		})
 			.then((response) => res.json(response))
 			.catch((err) => next(new Error(err)));
 	});

@@ -17,18 +17,20 @@ require("./database/client");
 const app = express();
 // return data from express as json
 app.use(express.json());
+
 // forcing https
-var forceSsl = function (req, res, next) {
-    if (req.headers['x-forwarded-proto'] !== 'https') {
-        return res.redirect(['https://', req.get('Host'), req.url].join(''));
-    }
-    return next();
- };
-app.use(forceSsl);
+// var forceSsl = function (req, res, next) {
+//     if (req.headers['x-forwarded-proto'] !== 'https') {
+//         return res.redirect(['https://', req.get('Host'), req.url].join(''));
+//     }
+//     return next();
+//  };
+// app.use(forceSsl);
+
 // use cors
-// http://localhost:3000
+// https://ferienwohnung-ossiachersee.herokuapp.com
 app.use(cors({
-	origin: "https://ferienwohnung-ossiachersee.herokuapp.com",
+	origin: "http://localhost:3000",
 	credentials: true
 }));
 // use the routers, these are the paths for all the different routers

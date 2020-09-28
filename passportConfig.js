@@ -1,39 +1,38 @@
 const User = require("./database/models/users");
 const bcrypt = require("bcryptjs");
 const { modelName } = require("./database/models/users");
-const localStrategy = require('passport-local').Strategy
+const localStrategy = require("passport-local").Strategy;
 
 module.exports = function (passport) {
+	passport.use(
+		new localStrategy((username, password, done) => {
+			User.findOne({ username: username }, (err, user) => {
+				if (err) throw err;
+				if (!user) return done(null, false);
+				bcrypt.compare(password, user.password, (err, result) => {
+					if (err) throw err;
+					if (result === true) {
+						return done(null, user);
+					} else {
+						return done(null, false);
+					}
+				});
+			});
+		})
+	);
 
-    passport.use(
-        new localStrategy((username, password, done) => {
-            User.findOne({ username: username }, (err, user) => {
-                if (err) throw err
-                if (!user) return done(null, false)
-                bcrypt.compare(password, user.password, (err, result) => {
-                    if (err) throw err
-                    if (result === true) {
-                        return done(null, user)
-                    } else {
-                        return done(null, false)
-                    }
-                })
-            })
-        })
-    )
+	passport.serializeUser((user, cb) => {
+		cb(null, user.id);
+	});
+	passport.deserializeUser((id, cb) => {
+		User.findOne({ _id: id }, (err, user) => {
+			// //used to restrict which data is sent to only username
+			// const userInformation = {
+			//     username: user.username
+			// }
+			// cb(err, userInformation)
 
-    passport.serializeUser((user, cb) => {
-        cb(null, user.id)
-    })
-    passport.deserializeUser((id, cb) => {
-        User.findOne({ _id: id }, (err, user) => {
-            // //used to restrict which data is sent to only username
-            // const userInformation = {
-            //     username: user.username
-            // }
-            // cb(err, userInformation)
-
-            cb(err, user)
-        })
-    })
-}
+			cb(err, user);
+		});
+	});
+};

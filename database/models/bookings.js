@@ -9,12 +9,12 @@ const BookingSchema = new Schema(
 		arriveEpoch: { type: Number, required: true },
 		departEpoch: { type: Number, required: true },
 		arriveStr: { type: String, min: 10, max: 10, required: true },
-		departStr: { type: String, min: 10, max: 10, required: true },		
+		departStr: { type: String, min: 10, max: 10, required: true },
 		totalPrice: { type: Number, required: true },
-		prepayment: { type: Number, required: true },			
+		prepayment: { type: Number, required: true },
 		amtPaid: { type: Number, required: true },
 		amtOwed: { type: Number, required: true },
-		people: { type: Number, required: true },			
+		people: { type: Number, required: true },
 	},
 	{ timestamps: true }
 );
