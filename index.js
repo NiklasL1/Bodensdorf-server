@@ -1,6 +1,6 @@
 // Importing express
 const express = require("express");
-const { forceDomain } = require('forcedomain');
+// const { forceDomain } = require('forcedomain');
 // declaring router
 const usersRouter = require("./routes/users");
 const bookingsRouter = require("./routes/bookings");
@@ -36,10 +36,10 @@ app.use(express.json());
 // 	  next();
 //   });
 
-app.use(forceDomain({
-	hostname: 'ferienwohnung-ossiachersee.herokuapp.com',
-	protocol: 'https'
-  }));
+// app.use(forceDomain({
+// 	hostname: 'ferienwohnung-ossiachersee.herokuapp.com',
+// 	protocol: 'https'
+//   }));
 
 // use cors
 app.use(cors({
