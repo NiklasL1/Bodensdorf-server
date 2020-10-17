@@ -1,5 +1,6 @@
 // Importing express
 const express = require("express");
+const { forceDomain } = require('forcedomain');
 // declaring router
 const usersRouter = require("./routes/users");
 const bookingsRouter = require("./routes/bookings");
@@ -18,22 +19,27 @@ const app = express();
 // return data from express as json
 app.use(express.json());
 
-// forcing https
-var forceSsl = function (req, res, next) {
-    if (req.headers['x-forwarded-proto'] !== 'https') {
-        return res.redirect(['https://', req.get('Host'), req.url].join(''));
-    }
-    return next();
- };
-app.use(forceSsl);
+// // forcing https
+// var forceSsl = function (req, res, next) {
+//     if (req.headers['x-forwarded-proto'] !== 'https') {
+//         return res.redirect(['https://', req.get('Host'), req.url].join(''));
+//     }
+//     return next();
+//  };
+// app.use(forceSsl);
 
-// forcing https version 2
-app.use(function(req, res, next) {
-	if ((req.get('X-Forwarded-Proto') !== 'https')) {
-	  res.redirect('https://' + req.get('Host') + req.url);
-	} else
-	  next();
-  });
+// // forcing https version 2
+// app.use(function(req, res, next) {
+// 	if ((req.get('X-Forwarded-Proto') !== 'https')) {
+// 	  res.redirect('https://' + req.get('Host') + req.url);
+// 	} else
+// 	  next();
+//   });
+
+app.use(forceDomain({
+	hostname: 'ferienwohnung-ossiachersee.herokuapp.com',
+	protocol: 'https'
+  }));
 
 // use cors
 app.use(cors({
