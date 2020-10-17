@@ -27,10 +27,17 @@ app.use(express.json());
 //  };
 // app.use(forceSsl);
 
+// forcing https version 2
+app.use(function(req, res, next) {
+	if ((req.get('X-Forwarded-Proto') !== 'https')) {
+	  res.redirect('https://' + req.get('Host') + req.url);
+	} else
+	  next();
+  });
+
 // use cors
-// https://ferienwohnung-ossiachersee.herokuapp.com
 app.use(cors({
-	origin: "http://localhost:3000",
+	origin: process.env.APP_LOCATION === "development" ? "http://localhost:3000" : "https://ferienwohnung-ossiachersee.herokuapp.com",
 	credentials: true
 }));
 // use the routers, these are the paths for all the different routers
