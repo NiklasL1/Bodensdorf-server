@@ -19,13 +19,13 @@ const app = express();
 app.use(express.json());
 
 // forcing https
-// var forceSsl = function (req, res, next) {
-//     if (req.headers['x-forwarded-proto'] !== 'https') {
-//         return res.redirect(['https://', req.get('Host'), req.url].join(''));
-//     }
-//     return next();
-//  };
-// app.use(forceSsl);
+var forceSsl = function (req, res, next) {
+    if (req.headers['x-forwarded-proto'] !== 'https') {
+        return res.redirect(['https://', req.get('Host'), req.url].join(''));
+    }
+    return next();
+ };
+app.use(forceSsl);
 
 // forcing https version 2
 app.use(function(req, res, next) {
