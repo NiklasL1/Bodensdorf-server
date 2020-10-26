@@ -7,6 +7,7 @@ const bookingsRouter = require("./routes/bookings");
 const groupedBookingsRouter = require("./routes/groupedBookings");
 const stripeRouter = require("./routes/stripe")
 const passportRouter = require("./routes/passport")
+const stripeNewRouter = require("./routes/stripeNew")
 // Importing cors
 const cors = require("cors");
 // import env file
@@ -19,28 +20,6 @@ const app = express();
 // return data from express as json
 app.use(express.json());
 
-// // forcing https
-// var forceSsl = function (req, res, next) {
-//     if (req.headers['x-forwarded-proto'] !== 'https') {
-//         return res.redirect(['https://', req.get('Host'), req.url].join(''));
-//     }
-//     return next();
-//  };
-// app.use(forceSsl);
-
-// // forcing https version 2
-// app.use(function(req, res, next) {
-// 	if ((req.get('X-Forwarded-Proto') !== 'https')) {
-// 	  res.redirect('https://' + req.get('Host') + req.url);
-// 	} else
-// 	  next();
-//   });
-
-// app.use(forceDomain({
-// 	hostname: 'ferienwohnung-ossiachersee.herokuapp.com',
-// 	protocol: 'https'
-//   }));
-
 // use cors
 app.use(cors({
 	origin: process.env.APP_LOCATION === "development" ? "http://localhost:3000" : "https://ferienwohnung-ossiachersee.herokuapp.com",
@@ -52,6 +31,7 @@ app.use("/api/bookings", bookingsRouter);
 app.use("/api/groupedBookings", groupedBookingsRouter);
 app.use("/api/payment", stripeRouter);
 app.use("/api", passportRouter);
+app.use("/api/payments", stripeNewRouter);
 // error middleware, any next function passed an error will find this if there is an error
 app.use((err, req, res, next) => {
 	console.error(err.message)
