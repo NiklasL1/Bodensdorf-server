@@ -21,17 +21,18 @@ const calculateOrderAmount = (price) => {
 
 	// people from directly manipulating the amount on the client
 
-	return price*100;
+	return price * 100;
 };
 
 router.post("/create-payment-intent", async (req, res) => {
-	const { price } = req.body;
+	const { price, bookingStart, bookingEnd, bookingType } = req.body;
 
 	// Create a PaymentIntent with the order amount and currency
 
 	const paymentIntent = await stripe.paymentIntents.create({
 		amount: calculateOrderAmount(price),
 		currency: "eur",
+		description: `${bookingStart} - ${bookingEnd} (${bookingType})`
 	});
 
 	res.send({
@@ -40,7 +41,7 @@ router.post("/create-payment-intent", async (req, res) => {
 });
 
 router.post("/create-iban-payment-intent", async (req, res) => {
-	const { price } = req.body;
+	const { price, bookingStart, bookingEnd, bookingType } = req.body;
 
 	// Create a PaymentIntent with the order amount and currency
 
@@ -48,9 +49,10 @@ router.post("/create-iban-payment-intent", async (req, res) => {
 		amount: calculateOrderAmount(price),
 		currency: "eur",
 		// setup_future_usage: 'off_session',
-		payment_method_types: ['sepa_debit'],
+		payment_method_types: ["sepa_debit"],
 		// Verify your integration in this guide by including this parameter
-		metadata: {integration_check: 'sepa_debit_accept_a_payment'},
+		metadata: { integration_check: "sepa_debit_accept_a_payment" },
+		description: `${bookingStart} - ${bookingEnd} (${bookingType})`,
 	});
 
 	res.send({
