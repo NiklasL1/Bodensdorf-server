@@ -32,7 +32,29 @@ router.post("/create-payment-intent", async (req, res) => {
 	const paymentIntent = await stripe.paymentIntents.create({
 		amount: calculateOrderAmount(price),
 		currency: "eur",
-		description: `${bookingStart} - ${bookingEnd} (${bookingType})`
+		description: `${bookingStart} - ${bookingEnd} (${bookingType})`,
+	});
+
+	res.send({
+		clientSecret: paymentIntent.client_secret,
+	});
+});
+
+router.post("/create-sofort-payment-intent", async (req, res) => {
+	const { price, bookingStart, bookingEnd, bookingType } = req.body;
+
+	// Create a PaymentIntent with the order amount and currency
+
+	const paymentIntent = await stripe.paymentIntents.create({
+		amount: calculateOrderAmount(price),
+		currency: "eur",
+		payment_method_types: ["sofort"],
+		payment_method_options: {
+			sofort: {
+				preferred_language: "de",
+			},
+		},
+		description: `${bookingStart} - ${bookingEnd} (${bookingType})`,
 	});
 
 	res.send({
