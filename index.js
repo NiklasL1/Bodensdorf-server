@@ -22,7 +22,7 @@ app.use(express.json());
 
 // use cors
 app.use(cors({
-	origin: process.env.APP_LOCATION === "development" ? "http://localhost:3000" : "https://ferienwohnung-ossiachersee.herokuapp.com",
+	origin: process.env.APP_LOCATION === "development" ? process.env.APP_DEV_API : process.env.APP_PROD_API,
 	credentials: true
 }));
 // use the routers, these are the paths for all the different routers
