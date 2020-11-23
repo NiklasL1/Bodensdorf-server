@@ -41,7 +41,12 @@ router.post("/create-payment-intent", async (req, res) => {
 });
 
 router.post("/create-sofort-payment-intent", async (req, res) => {
-	const { price, bookingStart, bookingEnd, bookingType } = req.body;
+	const {
+		price,
+		bookingStart,
+		bookingEnd,
+		bookingType,		
+	} = req.body;
 
 	// Create a PaymentIntent with the order amount and currency
 
