@@ -5,9 +5,10 @@ const express = require("express");
 const usersRouter = require("./routes/users");
 const bookingsRouter = require("./routes/bookings");
 const groupedBookingsRouter = require("./routes/groupedBookings");
-const stripeRouter = require("./routes/stripe")
+// const stripeRouter = require("./routes/stripeOLD")
 const passportRouter = require("./routes/passport")
 const stripeNewRouter = require("./routes/stripeNew")
+const nodemailerRouter = require("./routes/nodemailer")
 // Importing cors
 const cors = require("cors");
 // import env file
@@ -29,9 +30,10 @@ app.use(cors({
 app.use("/api/users", usersRouter);
 app.use("/api/bookings", bookingsRouter);
 app.use("/api/groupedBookings", groupedBookingsRouter);
-app.use("/api/payment", stripeRouter);
+// app.use("/api/payment", stripeRouter);
 app.use("/api", passportRouter);
 app.use("/api/payments", stripeNewRouter);
+app.use("/api/mail", nodemailerRouter)
 // error middleware, any next function passed an error will find this if there is an error
 app.use((err, req, res, next) => {
 	console.error(err.message)
