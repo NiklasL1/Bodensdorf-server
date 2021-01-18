@@ -7,7 +7,7 @@ const { resolve } = require("path");
 // This is your real test secret API key.
 
 const stripe = require("stripe")(
-	"sk_test_51HJwTAKuLkk2F1U97GRH3SlNqdgvapCu4yWL0LmMmPHpQ6qGCKtYC7d7QhNT3ryjxOjoNH8nONvpGC6gWHxF4e3z004M2cPo3l"
+	"sk_live_NX1urFCo3oaPIdtpCEZrVka7"
 );
 
 const { v4: uuidv4 } = require("uuid");
@@ -21,7 +21,7 @@ const calculateOrderAmount = (price) => {
 
 	// people from directly manipulating the amount on the client
 
-	return price * 100;
+	return price;
 };
 
 router.post("/create-payment-intent", async (req, res) => {

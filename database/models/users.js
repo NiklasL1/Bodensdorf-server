@@ -19,7 +19,7 @@ const UserSchema = new Schema(
 		fName: { type: String, min: 1, max: 30, required: true },
 		lName: { type: String, min: 1, max: 30, required: true },
 		email: { type: String, min: 1, max: 30, required: true },
-		telNo: { type: Number, required: true },
+		telNo: { type: String, required: true },
 	},
 	{ timestamps: true }
 );

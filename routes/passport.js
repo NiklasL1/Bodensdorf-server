@@ -53,7 +53,13 @@ router.post("/register", (req, res) => {
 				email: req.body.email,
 				telNo: req.body.telNo,
 			});
-			await newUser.save();
+			await newUser.save(function (err) {
+				if (err) {
+					console.log(err);
+				} else {
+					console.log("user: " + newUser.email + " saved.");
+				}
+			});
 			res.send("User Created");
 		}
 	});
