@@ -7,7 +7,7 @@ const { resolve } = require("path");
 // This is your real test secret API key.
 
 const stripe = require("stripe")(
-	"sk_live_NX1urFCo3oaPIdtpCEZrVka7"
+	"SECRECT KEY HERE"
 );
 
 const { v4: uuidv4 } = require("uuid");
