@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 
 const BookingSchema = new Schema(
 	{
-		userID: { type: Schema.Types.ObjectId, required: true },
+		userID: { type: Schema.Types.ObjectId, required: false },
 		airBnB: { type: Boolean, required: true },
 		arriveEpoch: { type: Number, required: true },
 		departEpoch: { type: Number, required: true },
@@ -15,6 +15,7 @@ const BookingSchema = new Schema(
 		amtPaid: { type: Number, required: true },
 		amtOwed: { type: Number, required: true },
 		people: { type: Number, required: true },
+		name: { type: String, required: false },
 	},
 	{ timestamps: true }
 );

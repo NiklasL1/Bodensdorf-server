@@ -2,13 +2,19 @@ const express = require("express");
 
 const router = express.Router();
 
-const { resolve } = require("path");
+// const { resolve } = require("path");
+
+require("dotenv").config();
 
 // This is your real test secret API key.
 
-const stripe = require("stripe")("SECRECT KEY HERE");
+const stripe = require("stripe")(
+	process.env.APP_LOCATION === "development"
+		? process.env.STRIPE_SECRET_KEY_DEV
+		: process.env.STRIPE_SECRET_KEY_PROD
+);
 
-const { v4: uuidv4 } = require("uuid");
+// const { v4: uuidv4 } = require("uuid");
 
 router.use(express.static("."));
 

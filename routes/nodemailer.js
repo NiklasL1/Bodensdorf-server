@@ -2,30 +2,16 @@
 const express = require("express");
 // Importing the router
 const router = express.Router();
-const path = require("path");
+require("dotenv").config();
 let nodemailer = require("nodemailer");
 
-// let transporter = nodemailer.createTransport({
-// 	host: "smtp.dd24.net",
-// 	port: 587,
-// 	secure: false,
-// 	auth: {
-// 		user: process.env.MAIL_USER,
-// 		pass: process.env.MAIL_PSWD,
-// 	},
-// 	tls: {
-// 		// do not fail on invalid certs
-// 		rejectUnauthorized: false,
-// 	},
-// });
-
 let transporter = nodemailer.createTransport({
-	host: "smtp.dd24.net",
+	host: process.env.MAIL_HOST,
 	port: 587,
 	secure: false,
 	auth: {
-		user: "admin@ossiachersee-ferienwohnung.de",
-		pass: "2tM#%UATJIc0",
+		user: process.env.MAIL_USER,
+		pass: process.env.MAIL_PSWD,
 	},
 	tls: {
 		// do not fail on invalid certs
@@ -46,19 +32,28 @@ router.post("/access", (req, res, next) => {
 	var email = req.body.email;
 	var subject = req.body.subject;
 	var content = req.body.content;
-	// var content = `email: ${email} \n message: ${message} `;
 
-	var mail = {
-		// from: {
-		//     name: name,
-		//     address: process.env.MAIL_USER
-		// },
-		from: process.env.MAIL_USER,
-		to: email,
-		subject: subject,
-		text: content,
-		// html: stuff
-	};
+	if (
+		subject === "Registration confirmation - Lake Ossiach holiday apartment" ||
+		subject === "Konto angelegt - Ossiacher See Ferienwohnung"
+	) {
+		var mail = {
+			from: process.env.MAIL_USER,
+			to: email,
+			subject: subject,
+			text: content,
+			// html: stuff
+		};
+	} else {
+		var mail = {
+			from: process.env.MAIL_USER,
+			to: email,
+			bcc: "heidi@tomlittle.org",
+			subject: subject,
+			text: content,
+			// html: stuff
+		};
+	}
 
 	transporter.sendMail(mail, (err, data) => {
 		if (err) {
