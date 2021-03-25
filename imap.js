@@ -5,6 +5,9 @@ const fetch = require("node-fetch");
 const schedule = require("node-schedule");
 const moment = require("moment");
 require("dotenv").config();
+const fs = require("fs");
+
+console.log("Starting job schedule.");
 
 schedule.scheduleJob("30 03 * * *", () => {
 	var config = {
@@ -17,7 +20,7 @@ schedule.scheduleJob("30 03 * * *", () => {
 			tlsOptions: {
 				rejectUnauthorized: false,
 			},
-			authTimeout: 3000,
+			authTimeout: 30000,
 		},
 	};
 
@@ -41,6 +44,7 @@ schedule.scheduleJob("30 03 * * *", () => {
 							var idHeader = "Imap-Id: " + id + "\r\n";
 							simpleParser(idHeader + all.body, (err, parsed) => {
 								// access to the whole mail object
+								// console.log("text:", parsed.text);
 								let nameArray = parsed.text.match(/\– (.*?) kommt/);
 								let priceArray = parsed.text.match(
 									/(?<=Gesamtbetrag\n\n)(.*?)(?=€)/
@@ -71,7 +75,13 @@ schedule.scheduleJob("30 03 * * *", () => {
 
 									let name = nameArray[1];
 									let price = priceArray[1].replace(",", ".");
-									let guests = guestsArray[1];
+									let guestsRaw = guestsArray[1];
+									let guests = !guestsRaw.match(/[a-zA-Z]/)
+										? guestsRaw
+										: JSON.stringify(
+												parseInt(guestsRaw.match(/(^\d)(.*?\s)(\d)/)[1], 10) +
+													parseInt(guestsRaw.match(/(^\d)(.*?\s)(\d)/)[3], 10)
+										  );
 
 									console.log("name:", name);
 									console.log("price:", price);
@@ -88,7 +98,7 @@ schedule.scheduleJob("30 03 * * *", () => {
 											return "01";
 										} else if (month.startsWith("Feb")) {
 											return "02";
-										} else if (month.startsWith("Mär")) {
+										} else if (month.endsWith("rz")) {
 											return "03";
 										} else if (month.startsWith("Apr")) {
 											return "04";
@@ -102,7 +112,7 @@ schedule.scheduleJob("30 03 * * *", () => {
 											return "08";
 										} else if (month.startsWith("Sep")) {
 											return "09";
-										} else if (month.startsWith("Oct")) {
+										} else if (month.startsWith("Okt")) {
 											return "10";
 										} else if (month.startsWith("Nov")) {
 											return "11";
@@ -152,7 +162,13 @@ schedule.scheduleJob("30 03 * * *", () => {
 										})
 											.then(console.log("created booking:", doc))
 											.catch((error) => {
-												console.error("Error:", error);
+												fs.appendFile(
+													"IMAPlog.txt",
+													`The booking ${JSON.stringify({ ...doc })} failed to write on ${moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a")} ERROR MESSAGE: ${error}\r\n`,
+													function (err) {
+														if (err) console.error("Problem marking message as seen");
+													}
+												);
 											});
 									};
 									create();
@@ -161,9 +177,15 @@ schedule.scheduleJob("30 03 * * *", () => {
 									console.log("error:", err);
 								}
 							});
-							return connection.addFlags(id, "\Seen", (err) => {
+							return connection.addFlags(id, "Seen", (err) => {
 								if (err) {
-									console.log("Problem marking message as seen");
+									fs.appendFile(
+										"IMAPlog.txt",
+										`Problem marking message as seen at ${moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a")} ERROR MESSAGE: ${err}\r\n`,
+										function (err) {
+											if (err) console.error("Error writing file", err);
+										}
+									);
 								}
 							});
 						});
@@ -171,6 +193,12 @@ schedule.scheduleJob("30 03 * * *", () => {
 			});
 		})
 		.catch((error) => {
-			console.error("Error:", error);
+			fs.appendFile(
+				"IMAPlog.txt",
+				`Error connecting to mail server at ${moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a")} ERROR MESSAGE: ${error}\r\n`,
+				function (err) {
+					if (err) console.error("Error writing file", err);
+				}
+			);
 		});
 });
