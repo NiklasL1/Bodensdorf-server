@@ -6,6 +6,7 @@ const schedule = require("node-schedule");
 const moment = require("moment");
 require("dotenv").config();
 const fs = require("fs");
+require('https').globalAgent.options.ca = require('ssl-root-cas/latest').create();
 
 console.log("Starting job schedule.");
 
