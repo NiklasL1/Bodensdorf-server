@@ -6,11 +6,11 @@ const schedule = require("node-schedule");
 const moment = require("moment");
 require("dotenv").config();
 const fs = require("fs");
-require('https').globalAgent.options.ca = require('ssl-root-cas/latest').create();
+require('https').globalAgent.options.ca = require('ssl-root-cas').create();
 
 console.log("Starting job schedule.");
 
-schedule.scheduleJob("30 03 * * *", () => {
+//schedule.scheduleJob("30 03 * * *", () => {
 	var config = {
 		imap: {
 			user: process.env.MAIL_USER_2,
@@ -64,7 +64,7 @@ schedule.scheduleJob("30 03 * * *", () => {
 								if (nameArray && priceArray && guestsArray && dateSection) {
 									let cleanDates = dateSection[1].replace(/\s+|\0/g, "");
 									let datesArray = cleanDates.match(
-										/(\d{2})\.(\w+)(\d{4})(.*?g|.*?h)(\d{2}|\d{1})\.(\w+)(\d{4})/s
+										/(\d{2}|\d{1})\.(\w+)(\d{4})(.*?g|.*?h)(\d{2}|\d{1})\.(\w+)(\d{4})/s
 									);
 
 									let arriveDay = datesArray[1];
@@ -165,7 +165,7 @@ schedule.scheduleJob("30 03 * * *", () => {
 											.catch((error) => {
 												fs.appendFile(
 													"IMAPlog.txt",
-													`The booking ${JSON.stringify({ ...doc })} failed to write on ${moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a")} ERROR MESSAGE: ${error}\r\n`,
+													`The booking ${JSON.stringify({ ...doc })} failed to write on ${moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a")} ERROR MESSAGE: ${error}\r\n\n`,
 													function (err) {
 														if (err) console.error("Problem marking message as seen");
 													}
@@ -182,7 +182,7 @@ schedule.scheduleJob("30 03 * * *", () => {
 								if (err) {
 									fs.appendFile(
 										"IMAPlog.txt",
-										`Problem marking message as seen at ${moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a")} ERROR MESSAGE: ${err}\r\n`,
+										`Problem marking message as seen at ${moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a")} ERROR MESSAGE: ${err}\r\n\n`,
 										function (err) {
 											if (err) console.error("Error writing file", err);
 										}
@@ -196,10 +196,10 @@ schedule.scheduleJob("30 03 * * *", () => {
 		.catch((error) => {
 			fs.appendFile(
 				"IMAPlog.txt",
-				`Error connecting to mail server at ${moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a")} ERROR MESSAGE: ${error}\r\n`,
+				`Error connecting to mail server at ${moment(Date.now()).format("MMMM Do YYYY, h:mm:ss a")} ERROR MESSAGE: ${error}\r\n\n`,
 				function (err) {
 					if (err) console.error("Error writing file", err);
 				}
 			);
 		});
-});
+//});
