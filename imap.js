@@ -10,7 +10,7 @@ require('https').globalAgent.options.ca = require('ssl-root-cas').create();
 
 console.log("Starting job schedule.");
 
-//schedule.scheduleJob("30 03 * * *", () => {
+schedule.scheduleJob("30 03 * * *", () => {
 	var config = {
 		imap: {
 			user: process.env.MAIL_USER_2,
@@ -149,7 +149,7 @@ console.log("Starting job schedule.");
 									let url =
 										process.env.APP_LOCATION === "development"
 											? new URL("/", process.env.APP_DEV_API)
-											: new URL("/", process.env.APP_PROD_API);
+											: new URL("/", process.env.APP_PROD_LOCAL_API);
 									let server = new URL("/api/bookings/", url);
 
 									const create = () => {
@@ -202,4 +202,4 @@ console.log("Starting job schedule.");
 				}
 			);
 		});
-//});
+});
