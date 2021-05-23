@@ -16,6 +16,7 @@ const BookingSchema = new Schema(
 		amtOwed: { type: Number, required: true },
 		people: { type: Number, required: true },
 		name: { type: String, required: false },
+		reminderStatus: { type: String, required: false },
 	},
 	{ timestamps: true }
 );

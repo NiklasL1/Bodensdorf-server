@@ -10,6 +10,7 @@ const UserSchema = new Schema(
 		lName: { type: String, min: 1, max: 30, required: true },
 		email: { type: String, min: 1, max: 30, required: true },
 		telNo: { type: String, required: true },
+		language: { type: String, required: true },
 	},
 	{ timestamps: true }
 );

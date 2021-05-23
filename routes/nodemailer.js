@@ -48,7 +48,7 @@ router.post("/access", (req, res, next) => {
 		var mail = {
 			from: process.env.MAIL_USER,
 			to: email,
-			bcc: "heidi@tomlittle.org",
+			bcc: email !== "heidi@tomlittle.org" ? "heidi@tomlittle.org" : "niklas@tomlittle.org",
 			subject: subject,
 			text: content,
 			// html: stuff

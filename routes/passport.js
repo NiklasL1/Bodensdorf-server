@@ -40,10 +40,9 @@ router.post("/login", (req, res, next) => {
 });
 
 router.post("/register", (req, res) => {
-	User.findOne({ username: req.body.username }, async (err, doc) => {
-		if (err) throw err;
+	User.findOne({ username: req.body.username }, async (err, doc) => {				
 		if (doc) res.send("User Already Exists");
-		if (!doc) {
+		else if (!doc) {
 			const hashedPassword = await bcrypt.hash(req.body.password, 10);
 			const newUser = new User({
 				username: req.body.username,
@@ -52,15 +51,17 @@ router.post("/register", (req, res) => {
 				lName: req.body.lName,
 				email: req.body.email,
 				telNo: req.body.telNo,
+				language: req.body.language,
 			});
 			await newUser.save(function (err) {
 				if (err) {
 					console.log(err);
+					res.send("Error");
 				} else {
 					console.log("user: " + newUser.email + " saved.");
+					res.send("User Created");
 				}
 			});
-			res.send("User Created");
 		}
 	});
 });
