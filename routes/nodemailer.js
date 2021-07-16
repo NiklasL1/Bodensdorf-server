@@ -35,7 +35,9 @@ router.post("/access", (req, res, next) => {
 
 	if (
 		subject === "Registration confirmation - Lake Ossiach holiday apartment" ||
-		subject === "Konto angelegt - Ossiacher See Ferienwohnung"
+		subject === "Konto angelegt - Ossiacher See Ferienwohnung" ||
+		subject === "Password change request - Lake Ossiach holiday apartment" ||
+		subject === "Passwort zurücksetzen - Ossiacher See Ferienwohnung"							
 	) {
 		var mail = {
 			from: process.env.MAIL_USER,

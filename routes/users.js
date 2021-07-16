@@ -5,6 +5,8 @@ const router = express.Router();
 // importing schema for project objects
 const User = require("../database/models/users");
 
+const bcrypt = require("bcryptjs");
+
 // GET api/<YOUR-DATA-TYPE>
 // GET api/<YOUR-DATA-TYPE>/:id
 // POST api/<YOUR-DATA-TYPE>
@@ -43,7 +45,25 @@ router
 			.then((updatedDocument) => res.json(updatedDocument))
 			.catch((err) => next(new Error(err)));
 	})
-
+	.put("/password/:id", async (req, res, next) => {
+		const { id } = req.params;
+		const hashedPassword = await bcrypt.hash(req.body.password, 10);
+		await User.findByIdAndUpdate(
+			id,
+			{
+				username: req.body.username,
+				password: hashedPassword,
+				fName: req.body.fName,
+				lName: req.body.lName,
+				email: req.body.email,
+				telNo: req.body.telNo,
+				language: req.body.language,
+			},
+			{ new: true, useFindAndModify: false }
+		)
+			.then((updatedDocument) => res.json(updatedDocument))
+			.catch((err) => next(new Error(err)));
+	})
 	.delete("/:id", async (req, res, next) => {
 		const { id } = req.params;
 		await User.findByIdAndDelete(id, { useFindAndModify: false })
