@@ -91,7 +91,7 @@ const checkReminders = async () => {
 														booking.arriveEpoch - e30Days
 													).format("DD.MM.YYYY")}.\r
 
-										To make the remaining payment, please log in to your account and click on "My Account" in the top left of your screen. You will see a list of your bookings and can click on the "Pay balance" button to pay the oustanding amount for your booking. Thank you!\r
+										To make the remaining payment, please log in to your account and click on the "My Account" icon, the rightmost icon in the menu on the top right of your screen. You will see a list of your bookings and can click on the "Pay balance" button to pay the oustanding amount for your booking. Thank you!\r
 										
 										Booking details:
 
@@ -131,7 +131,7 @@ const checkReminders = async () => {
 														booking.arriveEpoch - e30Days
 													).format("DD.MM.YYYY")} fällig.\r
 
-										Bitte zahlen Sie indem Sie sich in Ihrem Konto anmelden und dann oben links auf "Mein Konto" klicken. Sie sehen dann eine Liste Ihrer Buchungen und können die Zahlung tätigen, indem Sie auf "Restbetrag zahlen" klicken. Vielen Dank!\r
+										Bitte zahlen Sie indem Sie sich in Ihrem Konto anmelden und dann auf den "Mein Konto" Knopf klicken. Dieser befindet sich in dem Menu oben rechts, nachdem Sie sich angemeldet haben. Sie sehen dann eine Liste Ihrer Buchungen und können die Zahlung tätigen, indem Sie auf "Restbetrag zahlen" klicken. Vielen Dank!\r
 										
 										Buchungsdetails:
 
