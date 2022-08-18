@@ -5,6 +5,8 @@ const fs = require("fs");
 const dedent = require("dedent-js");
 require("dotenv").config();
 
+console.log("Starting reminder app.");
+
 schedule.scheduleJob("30 04 * * *", () => {
 
 const e10Days = 864000000;
